@@ -5,30 +5,51 @@ def print_room(text):
     print(text)
 
 
-def next_room(out_numbers):
-    print(f'{Data.next_room_text} ({", ".join(sorted(out_numbers.keys()))})')  # Вывод текста и вариантов ответа.
+def next_room(out_numbers, flags):
+    print(f'{Data.next_room_text} ({", ".join(sorted(out_numbers.keys()) + list(flags.keys()) )})')
+    # Вывод текста и вариантов ответа.
 
     text_input = input().lower()
-    while text_input and text_input not in out_numbers.keys():
-        print('NameError')
+    while text_input and text_input not in list(out_numbers.keys()) + list(flags.keys()):
+        print_room('NameError')
         text_input = input().lower()
+
     if text_input:
 
-        dct_rooms_numbers[str(out_numbers[text_input])].start()  # Вызов комнаты из словаря по изначению комнаты.
+        if text_input in out_numbers.keys():
+            dct_rooms_numbers[str(out_numbers[text_input])].start()  # Вызов комнаты из словаря по изначению комнаты.
+
+        else:
+            if not dct_flags[ flags[text_input] ]:
+                dct_flags[ flags[text_input] ] = True
+                print_room(Data.flags[flags[text_input]])
+            else:
+                print_room('Если тут что-то и было, это забрали')
+            next_room(out_numbers, flags)
 
     else:
         print('Bye!')
 
 
-dct_rooms_numbers = {}  # Словарь {номер комнаты: объект класса Rooms}
+dct_rooms_numbers = {}  # Словарь {номер комнаты: объект класса Rooms}.
+dct_flags = {}
 
 
 class Rooms:
 
-    def __init__(self, number, out_numbers, function=lambda: True):
+    def __init__(self, number, out_numbers, flags=None, function=lambda: True):
+        if flags is None:
+            flags = {}
+
+        if flags:
+            for i in flags.values():
+                if i not in dct_flags.keys():
+                    dct_flags.update({i: False})
+
         self.number = str(number)  # Строка номера комнаты.
         self.out_numbers = out_numbers
-        # Словарь напривлений и ссылок на объекты выхода.
+        self.flags = flags
+        # Словарь {направление: ссылка на объект}.
         self.function = function
         global dct_rooms_numbers
         dct_rooms_numbers.update({self.number: self})
@@ -36,7 +57,7 @@ class Rooms:
     def start(self):
         print_room(Data.text_room[self.number])
         if self.function():  # Вызываем функцию текущей комнаты, если не была передана, вызываем пустую.
-            next_room(self.out_numbers)  # Ввод и переход к следующей комнате.
+            next_room(self.out_numbers, self.flags)  # Ввод и переход к следующей комнате.
 
 
 def room_4():  # Функция 4-й комнаты.
@@ -51,9 +72,9 @@ def room_5():
     return False  # Не вызывать стандартный ввод
 
 
-room1 = Rooms(1, {'n': 2})
+room1 = Rooms(1, {'n': 2}, {'cry': 'cry_flag_1'})
 room2 = Rooms(2, {'s': 1, 'n': 3, 'w': 4})
 room3 = Rooms(3, {'s': 2})
-room4 = Rooms(4, {'e': 2, 'n': 5}, room_4)
-room5 = Rooms(5, {'s': 4}, room_5)
+room4 = Rooms(4, {'e': 2, 'n': 5}, function=room_4)
+room5 = Rooms(5, {'s': 4}, function=room_5)
 room1.start()
