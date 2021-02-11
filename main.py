@@ -7,17 +7,20 @@ def print_room(text):
 
 def next_room(out_numbers):
     print(f'{Data.next_room_text} ({", ".join(sorted(out_numbers.keys()))})')  # Вывод текста и вариантов ответа.
+
     text_input = input().lower()
     while text_input and text_input not in out_numbers.keys():
         print('NameError')
         text_input = input().lower()
     if text_input:
+
         dct_rooms_numbers[str(out_numbers[text_input])].start()  # Вызов комнаты из словаря по изначению комнаты.
+
     else:
         print('Bye!')
 
 
-dct_rooms_numbers = {}  # Словарь номеров комнат и объектов.
+dct_rooms_numbers = {}  # Словарь {номер комнаты: объект класса Rooms}
 
 
 class Rooms:
@@ -45,6 +48,7 @@ def room_4():  # Функция 4-й комнаты.
 
 def room_5():
     print("It's the end.")
+    return False  # Не вызывать стандартный ввод
 
 
 room1 = Rooms(1, {'n': 2})
