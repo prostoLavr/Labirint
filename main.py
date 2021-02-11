@@ -10,7 +10,7 @@ def input_room(text, out_numbers):
     text_input = input().lower()
     if text_input:
         if text_input in out_numbers.keys():
-            dct_rooms_numbers[str(out_numbers[text_input])].start()  # Вызов комнаты из словаря по значению комнаты.
+            dct_rooms_numbers[str(out_numbers[text_input])].start()  # Вызов комнаты из словаря по изначению комнаты.
         else:
             print('Name error')
     else:
@@ -24,32 +24,17 @@ def room_none():
     pass
 
 
-class Flags:
-    def __init__(self, kind):
-        global dct_rooms_numbers
-        self.raised = False
-        self.kind = kind
-        dct_rooms_numbers.update({kind: self})
-        if self.kind in dct_rooms_numbers.keys():
-            dct_rooms_numbers[kind] = (dct_rooms_numbers[kind], self)
-        else:
-            dct_rooms_numbers.update({kind: (self,)})
-
-    def start(self):
-        self.raised = True
-
-
-class MyObject:
-    def __
 
 
 class Rooms:
 
-    def __init__(self, number, out_numbers, function=lambda: None):
+    def __init__(self, number, out_numbers, function=room_none):
         self.number = str(number)  # Строка номера комнаты.
         self.out_numbers = out_numbers
-        # Словарь направлений и ссылок на объекты выхода.
+        # Словарь напривлений и ссылок на объекты выхода.
         self.function = function
+        print(self.function)
+        global dct_rooms_numbers
         dct_rooms_numbers.update({self.number: self})
 
     def start(self):
@@ -64,9 +49,14 @@ def room_4():  # Функция 4-й комнаты.
     print('Ok!')
 
 
+def get_flag(room_number):
+    pass
+
+
 room1 = Rooms(1, {'n': 2})
 room2 = Rooms(2, {'s': 1, 'n': 3, 'w': 4})
-room3 = Rooms(3, {'s': 2, 'cry': Flags('key')})
+room3 = Rooms(3, {'s': 2, 'cry': get_flag(3)})
 room4 = Rooms(4, {'e': 2, 'n': 5}, room_4)
 room5 = Rooms(5, {'s': 4})
+print(dct_rooms_numbers)
 room1.start()
