@@ -5,8 +5,13 @@ def print_room(text):
     print(text)
 
 
+def input_room(text):
+    print(f'{Data.next_room_text} ({", ".join(text)})')
+    return input().lower()
+
+
 def next_room(out_numbers, flags):
-    print(f'{Data.next_room_text} ({", ".join(sorted(out_numbers.keys()) + list(flags.keys()) )})')
+
     # Вывод текста и вариантов ответа.
 
     text_input = input().lower()
@@ -20,8 +25,8 @@ def next_room(out_numbers, flags):
             dct_rooms_numbers[str(out_numbers[text_input])].start()  # Вызов комнаты из словаря по изначению комнаты.
 
         else:
-            if not dct_flags[ flags[text_input] ]:
-                dct_flags[ flags[text_input] ] = True
+            if not dct_flags[flags[text_input]]:
+                dct_flags[flags[text_input]] = True
                 print_room(Data.flags[flags[text_input]])
             else:
                 print_room('Если тут что-то и было, это забрали')
@@ -73,8 +78,8 @@ def room_5():
 
 
 room1 = Rooms(1, {'n': 2}, {'cry': 'cry_flag_1'})
-room2 = Rooms(2, {'s': 1, 'n': 3, 'w': 4})
-room3 = Rooms(3, {'s': 2})
-room4 = Rooms(4, {'e': 2, 'n': 5}, function=room_4)
-room5 = Rooms(5, {'s': 4}, function=room_5)
+Rooms(2, {'s': 1, 'n': 3, 'w': 4})
+Rooms(3, {'s': 2})
+Rooms(4, {'e': 2, 'n': 5}, function=room_4)
+Rooms(5, {'s': 4}, function=room_5)
 room1.start()
