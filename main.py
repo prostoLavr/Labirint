@@ -1,4 +1,4 @@
-from Labirint import Data
+import Data
 
 
 def print_room(text):
