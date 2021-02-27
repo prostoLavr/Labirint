@@ -1,8 +1,13 @@
 def room_4():  # Функция 4-й комнаты.
     print('Hello! How are U?')
-    input()
-    print('Ok!')
-    return True  # Продолжить стандартным вводом
+    text = input().lower()
+    if text in ('fine', 'ok', "I'm fine"):
+        print("It's so perfect!")
+        return True  # Продолжить стандартным вводом
+    else:
+        print("Fuck up!")
+        print('You died :(')
+        return False
 
 
 def room_5():  # Функция 5-й комнаты.
