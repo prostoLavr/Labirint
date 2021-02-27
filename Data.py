@@ -5,7 +5,7 @@ def room_4():  # Функция 4-й комнаты.
     return True  # Продолжить стандартным вводом
 
 
-def room_5():
+def room_5():  # Функция 5-й комнаты.
     print("It's the end.")
     return False  # Не вызывать стандартный ввод
 
